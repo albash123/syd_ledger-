@@ -2,9 +2,10 @@
 (() => {
   'use strict';
 
-  // Set this ONE value to a real HTTPS endpoint to enable contact delivery.
-  // Endpoint contract and security responsibilities are documented in README.md.
+  // Leave blank for the email-app fallback. On cPanel, set this to 'contact-handler.php'.
+  // A full HTTPS endpoint also works when the handler is hosted elsewhere.
   const CONTACT_ENDPOINT = '';
+  const CONTACT_EMAIL = 'Sydledgersolutions@gmail.com';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
   const root = document.documentElement;
@@ -219,9 +220,10 @@
     const status = qs('#form-status');
     const submit = qs('button[type="submit"]',form);
     const fields = qsa('input,select,textarea',form);
-    const configured = /^https:\/\//i.test(CONTACT_ENDPOINT);
+    const configured = window.location.protocol !== 'file:' && (/^https:\/\//i.test(CONTACT_ENDPOINT) || /^[\w./-]+(?:\?.*)?$/i.test(CONTACT_ENDPOINT));
     const note = qs('#submission-note');
     if(configured) note.textContent = 'Submit your details to request a free 15-minute consultation.';
+    else note.textContent = `Your email app will open with the enquiry addressed to ${CONTACT_EMAIL}.`;
     submit.disabled = false;
     form.noValidate = true;
     const validateField = field => {
@@ -244,8 +246,12 @@
         return;
       }
       if(!configured) {
-        status.textContent = 'Your details are valid, but this form is not connected yet. Nothing has been sent. Please return when consultation requests are available.';
-        status.focus(); return;
+        const data = Object.fromEntries(new FormData(form));
+        const subject = encodeURIComponent(`SYD Ledger Solutions consultation enquiry from ${data.fullName}`);
+        const body = encodeURIComponent(`Full Name: ${data.fullName}\nEmail: ${data.email}\nCompany/Business Name: ${data.company || 'Not provided'}\nCountry: ${data.country}\nTransactions per Month: ${data.transactionsPerMonth}\nMessage: ${data.message || 'Not provided'}`);
+        status.textContent = `Opening your email app addressed to ${CONTACT_EMAIL}…`;
+        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+        return;
       }
       submit.disabled = true; form.setAttribute('aria-busy','true');
       status.textContent='Sending your consultation request…';
@@ -266,8 +272,18 @@
     });
   }
 
+  function setupFlagChips() {
+    qsa('.flag-chip').forEach((chip) => {
+      chip.addEventListener('dragstart', () => chip.classList.add('is-dragging'));
+      chip.addEventListener('dragend', () => chip.classList.remove('is-dragging'));
+      chip.addEventListener('pointerdown', () => chip.classList.add('is-pressed'));
+      chip.addEventListener('pointerup', () => chip.classList.remove('is-pressed'));
+      chip.addEventListener('pointercancel', () => chip.classList.remove('is-pressed'));
+    });
+  }
+
   function init() {
-    setupNavigation(); setupContactForm(); setupBackgroundVideo();
+    setupNavigation(); setupContactForm(); setupBackgroundVideo(); setupFlagChips();
     window.setTimeout(() => qs('.page-loader')?.remove(), 1200);
     try { setupMotion(); } catch { motionContext?.revert(); root.classList.remove('js-motion'); }
     qs('.motion-toggle')?.addEventListener('click',(event)=>{
@@ -285,3 +301,4 @@
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
 })();
+
