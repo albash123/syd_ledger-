@@ -71,6 +71,9 @@ svg { display: block; }
 .brand-logo { width: 42px; height: 42px; object-fit: cover; border-radius: 50%; border: 1px solid rgba(10,102,194,.2); box-shadow: 0 5px 14px rgba(10,102,194,.12); }
 .wordmark-main { font: 800 1.85rem/1 var(--font-heading); letter-spacing: -.08em; color: var(--azure); }
 .wordmark-sub { font-size: .78rem; font-weight: 600; letter-spacing: -.02em; max-width: 80px; }
+.brand-lockup { display: flex; flex-direction: column; gap: 5px; }
+.brand-name { display: flex; align-items: center; gap: 10px; }
+.brand-slogan { font-size: 12px; line-height: 1.2; font-weight: 500; letter-spacing: .025em; color: var(--muted); }
 .nav-menu { display: flex; align-items: center; justify-content: flex-end; gap: 38px; flex: 1; }
 .nav-links { display: flex; align-items: center; gap: 7px; list-style: none; padding: 0; margin: 0 auto; }
 .nav-links a { position: relative; display: block; font-size: .88rem; font-weight: 500; padding: 9px 15px; border-radius: var(--radius-pill); color: var(--muted); transition: color var(--transition),background var(--transition); }
