@@ -19,3 +19,4 @@
 @media(max-width:767.98px){.ceo-photo-column,.ceo-copy{width:100%}.ceo-visual{max-width:470px;margin:auto;padding:16px 8px 48px}.ceo-chart{right:14px;top:28px;width:105px}.ceo-books{left:14px;bottom:70px}.ceo-tools{right:14px;font-size:12px}.ceo-copy h2{font-size:clamp(2.2rem,9vw,3.5rem)}.ceo-message{padding:22px}.ceo-float{translate:none}.ceo-section .site-container{min-width:0}}
 @media(prefers-reduced-motion:reduce){.ceo-section *,.ceo-section *::before,.ceo-section *::after{animation:none!important;transition:none!important}.ceo-chart-line{stroke-dashoffset:0}}
 .pause-motion .ceo-section *,.pause-motion .ceo-section::before{animation-play-state:paused!important}
+

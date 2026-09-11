@@ -16,3 +16,4 @@
  .from(section.querySelector('.ceo-identity'),{opacity:0,y:14},1.05);
  });
 })();
+
